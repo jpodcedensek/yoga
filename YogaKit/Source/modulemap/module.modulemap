@@ -1,5 +1,5 @@
 module YogaKit {
-    header "../YogaKit.h"
+    header "../YGLayout.h"
     header "../UIView+Yoga.h"
     export *
 }

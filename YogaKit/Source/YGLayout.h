@@ -5,10 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import <UIKit/UIKit.h>
-#import <yoga/YGEnums.h>
-#import <yoga/YGMacros.h>
-#import <yoga/Yoga.h>
+#import <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+@import AppKit;
+#else
+@import UIKit;
+#endif
+
+#import "../../yoga/YGEnums.h"
+#import "../../yoga/YGMacros.h"
+#import "../../yoga/Yoga.h"
 
 YG_EXTERN_C_BEGIN
 
