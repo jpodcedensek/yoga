@@ -11,7 +11,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "YogaKit",
-            targets: ["YogaKit"]),
+            targets: ["YogaKit", "YogaKitSwift"]),
         .library(
             name: "Yoga",
             targets: ["Yoga"])
@@ -33,6 +33,15 @@ let package = Package(
             cSettings: [
                 .headerSearchPath("..")
             ]),
+        .target(
+            name: "YogaKitSwift",
+            dependencies: ["Yoga"],
+            path: "YogaKit",
+            sources: ["Source/YGLayoutExtensions.swift"]
+            //publicHeadersPath: "Source/modulemap",
+            /*cSettings: [
+                .headerSearchPath("..")
+            ]*/),
         .target(
             name: "Yoga",
             path: "yoga",
