@@ -32,16 +32,14 @@ let package = Package(
             publicHeadersPath: "Source/modulemap",
             cSettings: [
                 .headerSearchPath("..")
-            ]),
+            ]
+        ),
         .target(
             name: "YogaKitSwift",
             dependencies: ["Yoga"],
             path: "YogaKit",
             sources: ["Source/YGLayoutExtensions.swift"]
-            //publicHeadersPath: "Source/modulemap",
-            /*cSettings: [
-                .headerSearchPath("..")
-            ]*/),
+        ),
         .target(
             name: "Yoga",
             path: "yoga",
@@ -49,7 +47,8 @@ let package = Package(
             publicHeadersPath: "modulemap",
             cSettings: [
                 .headerSearchPath("..")
-            ])
+            ]
+        )
     ],
     cLanguageStandard: .gnu11,
     cxxLanguageStandard: .gnucxx14
