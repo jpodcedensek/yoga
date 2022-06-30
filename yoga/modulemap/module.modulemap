@@ -1,0 +1,8 @@
+framework module Yoga [extern_c] {
+    header "../Yoga.h"
+    header "../YGValue.h"
+    header "../YGMacros.h"
+    header "../YGEnums.h"
+    export *
+    module * { export * }
+}

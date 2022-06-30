@@ -158,6 +158,20 @@ YGValue YGPercentValue(CGFloat value) {
 
 static YGConfigRef globalConfig;
 
+static CGFloat scaleFactor(void) {
+    static CGFloat scaleFactor = 1;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+#if TARGET_OS_OSX
+        scaleFactor = [NSScreen mainScreen].backingScaleFactor;
+#else
+        scaleFactor = [UIScreen mainScreen].scale;
+#endif
+    });
+
+    return scaleFactor;
+}
+
 @interface YGLayout ()
 
 @property(nonatomic, weak, readonly) UIView* view;
@@ -175,7 +189,7 @@ static YGConfigRef globalConfig;
   globalConfig = YGConfigNew();
   YGConfigSetExperimentalFeatureEnabled(
       globalConfig, YGExperimentalFeatureWebFlexBasis, true);
-  YGConfigSetPointScaleFactor(globalConfig, [UIScreen mainScreen].scale);
+  YGConfigSetPointScaleFactor(globalConfig, scaleFactor());
 }
 
 - (instancetype)initWithView:(UIView*)view {
@@ -362,10 +376,18 @@ static YGSize YGMeasureView(
   //
   // See https://github.com/facebook/yoga/issues/606 for more information.
   if (!view.yoga.isUIView || [view.subviews count] > 0) {
+#if TARGET_OS_OSX
+    CGSize fittingSize = view.fittingSize;
+    sizeThatFits = (CGSize){
+        .width = fmin(constrainedWidth, fittingSize.width),
+        .height = fmin(constrainedHeight, fittingSize.height)
+    };
+#else
     sizeThatFits = [view sizeThatFits:(CGSize){
                                           .width = constrainedWidth,
                                           .height = constrainedHeight,
                                       }];
+#endif
   }
 
   return (YGSize){
@@ -452,7 +474,7 @@ static CGFloat YGRoundPixelValue(CGFloat value) {
   static CGFloat scale;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^() {
-    scale = [UIScreen mainScreen].scale;
+      scale = scaleFactor();
   });
 
   return roundf(value * scale) / scale;

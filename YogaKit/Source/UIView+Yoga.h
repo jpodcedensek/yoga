@@ -5,7 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import <UIKit/UIKit.h>
+#import <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+@import AppKit;
+#define UIView NSView
+#else
+@import UIKit;
+#endif
+
 #import "YGLayout.h"
 
 NS_ASSUME_NONNULL_BEGIN
